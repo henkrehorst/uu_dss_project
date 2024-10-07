@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, text, inspect, Table
 
 # Load the csv file into the db
 def _load_data_to_db():
-    engine = create_engine("postgresql://student:infomdss@db_dashboard:5432/dashboard")
+    engine = create_engine("postgresql://student:infomdss@db_dashboard_project:5432/dashboard")
 
     with engine.connect() as conn:
         result = conn.execute(text("DROP TABLE IF EXISTS population CASCADE;"))
@@ -15,7 +15,7 @@ def _load_data_to_db():
 
 # Fetch the hardcoded population table from the database
 def _fetch_data_from_db():
-    engine = create_engine("postgresql://student:infomdss@db_dashboard:5432/dashboard")
+    engine = create_engine("postgresql://student:infomdss@db_dashboard_project:5432/dashboard")
     population_table = pd.read_sql_table('population', engine, index_col='index')
 
     return population_table

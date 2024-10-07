@@ -1,24 +1,30 @@
-version: '3'
+version: '4'
 services:
-    
-    flask-app:
+    flask_app_project:
         build:
             context: .
             dockerfile: dashboard/Dockerfile_dashboard  # Specify the unique Dockerfile name
         ports:
             - 8080:5000
         volumes:
-            - ./dashboard:/app
             - ./data:/data
         environment:
             - NAME=Flask-App
             - PYTHONPATH=/app
         working_dir: /app
+        develop: 
+            watch:
+                - action: sync+restart
+                  path: ./dashboard/
+                  target: /app
+                - action: rebuild
+                  path: ./dashboard/requirements.txt
+                  target: /app
         depends_on:
-            db_dashboard:
+            db_dashboard_project:
                 condition: service_healthy
     
-    jupyter:
+    jupyter_project:
         build:
             context: .
             dockerfile: notebook/Dockerfile_notebook
@@ -33,7 +39,7 @@ services:
             - CHOWN_HOME=yes
         working_dir: /notebook
     
-    db_dashboard:
+    db_dashboard_project:
         image: postgres
         ports:
             - 5432:5432
@@ -43,7 +49,7 @@ services:
             - POSTGRES_DB=dashboard
         volumes:
             - db_dashboard-data:/var/lib/postgresql/data/
-        container_name: db_dashboard
+        container_name: db_dashboard_project
         healthcheck:
             test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
             interval: 3s
