@@ -25,3 +25,8 @@ except requests.exceptions.HTTPError as http_err:
     print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
 
 print(json.dumps(crowd_forecast, indent=4))
+
+'''
+This code outputs the classification (either LOW, MEDIUM or HIGH) per stationUic (unique station code).
+However, there is  no logical order in the JSON output.
+'''
