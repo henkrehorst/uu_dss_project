@@ -6,3 +6,5 @@ sqlalchemy
 pulp 
 country_converter
 python-gnupg
+requests
+flask-cors
