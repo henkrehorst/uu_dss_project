@@ -7,6 +7,7 @@ import {TravelersCompensationsLineGraph} from "@/components/TravelersCompensatio
 import {TBSPerformanceGauge} from "@/components/TBSPerformanceGauge.tsx";
 import {InfrastructurePerformanceGauge} from "@/components/InfrastructurePerformanceGauge.tsx";
 import {EquipmentPerformanceGauge} from "@/components/EquipmentPerformanceGauge.tsx";
+ import {RailRoutesLines} from "@/Components/RailRoutesLines.tsx";
 
 export const TrajectPage = () => {
     let {traject} = useParams<{traject: string}>()
@@ -15,6 +16,7 @@ export const TrajectPage = () => {
       <DashboardLayout
           mapComponent={<RailRoutesMap/>}
           title={'Tough Autumn Dashboard'}
+          railLinesComponent={<RailRoutesLines/>}
           gaugeSlot1={<TBSPerformanceGauge/>}
           gaugeSlot2={<EquipmentPerformanceGauge/>}
           gaugeSlot3={<InfrastructurePerformanceGauge/>}

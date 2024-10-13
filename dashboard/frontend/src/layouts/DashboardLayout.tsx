@@ -7,16 +7,14 @@ import {
     GridItem,
     Heading,
     SimpleGrid,
-    Stack,
-    Text,
     VStack
 } from "@chakra-ui/react";
 import {NSLogoIcon} from "@/icons/NSLogoIcon.tsx";
-import {RailRoutesLines} from "@/components/RailRoutesLines.tsx";
 
 interface DashboardLayoutProps {
     title: string
     mapComponent: ReactNode,
+    railLinesComponent: ReactNode,
     gaugeSlot1: ReactNode,
     gaugeSlot2: ReactNode,
     gaugeSlot3: ReactNode,
@@ -31,6 +29,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
                                                               gaugeSlot1,
                                                               gaugeSlot3,
                                                               gaugeSlot2,
+                                                              railLinesComponent,
                                                               lineGraphSlot2,
                                                               lineGraphSlot1
                                                           }) => {
@@ -58,7 +57,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
                             p={2}
                             borderWidth="1px"
                             borderRadius="md">
-                            <RailRoutesLines/>
+                            {railLinesComponent}
                         </GridItem>
                     </Grid>
                     <SimpleGrid columns={[1, 1, 3]} gap={2} w={'100%'}>
