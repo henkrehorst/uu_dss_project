@@ -1,3 +1,5 @@
+from pickle import FALSE
+
 import pandas as pd
 import plotly.express as px
 from flask import Flask, render_template_string, render_template
@@ -6,6 +8,8 @@ from sqlalchemy import create_engine, text, inspect, Table
 import requests
 import json
 import numpy as np
+from sympy import false
+
 
 # Load the csv file into the db
 def _load_data_to_db():
@@ -69,46 +73,125 @@ def index():
 
 @app.route('/rail_routes')
 def rail_routes():
-
+    RailStops = rail_stops()
+    StopListString = ",".join(RailStops)
 
     # Primary Key from NS API
     primary_key = "0c97e49d1a0e4a10bb2313d4bb697472"
 
     # Placeholder for the URL
-    url = "https://gateway.apiportal.ns.nl/Spoorkaart-API/api/v1/spoorkaart"
+    url = "https://gateway.apiportal.ns.nl/Spoorkaart-API/api/v1/traject"
 
     # Headers as defined in NS API documentation
     headers = {
         "Cache-Control": "no-cache",
         "Ocp-Apim-Subscription-Key": primary_key
     }
+
+    # Parameters as defined in NS API documentation
+    params = {
+        "stations": StopListString
+    }
+
     # Send GET request
     try:
         # Returns JSON file with nearest train station(s) of the put in lat/long
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, params=params)
         # Parse JSON content
         stations_data = response.json()
 
     except requests.exceptions.HTTPError as http_err:
         print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
 
+    # # This should be converted to a function that DOES work
     def random_color_generator():
-        color = np.random.randint(0, 256, size=3)
-        return tuple(color)
+        return tuple(np.random.randint(0, 256) for _ in range(3))
+
+    return json.dumps(stations_data['payload']['features'])
+
+
+@app.route('/rail_stops')
+def rail_stops():
+
+    # Primary Key from NS API
+    primary_key = "0c97e49d1a0e4a10bb2313d4bb697472"
+
+    # From to station pairs
+    stations = {"fromStation":"zl","toStation":"amf"}
+
+    # Placeholder for the URL
+    url = "https://gateway.apiportal.ns.nl/reisinformatie-api/api/v3/trips"
+
+    # Headers as defined in NS API documentation
+    headers = {
+        "Cache-Control": "no-cache",
+        "Ocp-Apim-Subscription-Key": primary_key
+    }
+
+    # Parameters as defined in NS API documentation
+    params = {
+        "fromStation": stations["fromStation"],
+        "toStation": stations["toStation"],
+        "passing": True #Shows intermediate stations
+    }
+
+    # Send GET request
+    try:
+        # Returns JSON file with nearest train station(s) of the put in lat/long
+        response = requests.get(url, headers=headers, params=params)
+        # Parse JSON content
+        stops_data = response.json()
+
+    except requests.exceptions.HTTPError as http_err:
+        print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
 
     # Cleaning the data so it becomes more readable and removes uneccesary information
-    def clean_station_data(data):
+    def clean_stop_data(data):
         cleaned_data = []
         # Loop over all results in the retrieved data to select only necessary attributes
-        for route in data['payload']['features']:
-            route['style'] = {'color': 'rgb{0}'.format(random_color_generator())}
-            cleaned_data.append(route)
+        for stop in data['trips'][0]['legs'][0]['stops']:
+            cleaned_data.append(FE_Codes(stop['name']))
 
         return cleaned_data
 
-    cleaned_stations_data = clean_station_data(stations_data)
+    cleaned_stop_data = clean_stop_data(stops_data) #uses the clean_stop_data to clean the API results
 
-    return json.dumps(cleaned_stations_data)
+    return cleaned_stop_data
+
+# Converts the station name to the station code or FE_code captured by the NS api
+def FE_Codes(StationName):
+
+    # Primary Key from NS API
+    primary_key = "0c97e49d1a0e4a10bb2313d4bb697472"
+
+    # Placeholder for the URL
+    url = "https://gateway.apiportal.ns.nl/reisinformatie-api/api/v2/stations"
+
+    # Headers as defined in NS API documentation
+    headers = {
+        "Cache-Control": "no-cache",
+        "Ocp-Apim-Subscription-Key": primary_key
+    }
+
+    # Parameters as defined in NS API documentation
+    params = {
+        "q": StationName
+    }
+
+    # Send GET request
+    try:
+        # Returns JSON file with nearest train station(s) of the put in lat/long
+        response = requests.get(url, headers=headers, params=params)
+        # Parse JSON content
+        FE_data = response.json()
+
+    except requests.exceptions.HTTPError as http_err:
+        print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
+
+    StationCode = str(FE_data['payload'][0]['code'])
+
+    return StationCode
+
 
 
 if __name__ == '__main__':
