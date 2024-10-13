@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {Button, Skeleton, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
-import {Search2Icon, ViewIcon} from "@chakra-ui/icons";
+import {Search2Icon} from "@chakra-ui/icons";
 
 export const RailRoutesLines = () => {
     const [lines, setLines] = useState<null | { id: string, name: string }[]>(null);
