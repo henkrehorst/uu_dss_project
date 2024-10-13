@@ -16,21 +16,19 @@ export const HomePage = () => {
 
     return (
         <MapContainer center={position} zoom={13} scrollWheelZoom={true} style={{height: '100vh'}}>
+            {/*Extra map colors https://leaflet-extras.github.io/leaflet-providers/preview/*/}
             <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
             />
             <Marker position={position}>
                 <Popup>
                     A pretty CSS3 popup. <br/> Easily customizable.
                 </Popup>
             </Marker>
-            {routes.map((route) =>
-                <GeoJSON data={route} style={(route) => ({color: route.style.color})}>
-                    <Popup>
-                        From: {route['properties']['from']}, To: {route['properties']['to']}
-                    </Popup>
+                {routes.map((route) =>
+                <GeoJSON data={route} style={{color: '#000000'}}>
                 </GeoJSON>
-            )}
+                )}
         </MapContainer>
     )
 }
