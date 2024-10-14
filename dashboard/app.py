@@ -115,10 +115,6 @@ def rail_routes():
 
         return stations_data['payload']['features']
 
-    def random_color_generator():
-        color = (np.random.randint(0, 256),np.random.randint(0, 256),np.random.randint(0, 256))
-        return tuple(color)
-
     TotalJson = []
     for station in stations: # Loop through all rows in the list of stations to plot named "Stations"
         stationData= rail_stops(station['fromStation'], station['toStation']) # Get a list of intermediate stops between the from and to station
