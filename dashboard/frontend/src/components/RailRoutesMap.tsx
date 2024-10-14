@@ -25,10 +25,10 @@ export const RailRoutesMap = () => {
                 </Popup>
             </Marker>
             {routes.map((route, index) =>
-                <GeoJSON key={index} data={route} style={(route) => ({color: route.style.color})}>
-                    <Popup>
-                        From: {route['properties']['from']}, To: {route['properties']['to']}
-                    </Popup>
+                <GeoJSON key={index} data={route} style={(route) => ({color: route.styles.color})}>
+                    {/*<Popup>*/}
+                    {/*    From: {route['properties']['from']}, To: {route['properties']['to']}*/}
+                    {/*</Popup>*/}
                 </GeoJSON>
             )}
         </MapContainer>
