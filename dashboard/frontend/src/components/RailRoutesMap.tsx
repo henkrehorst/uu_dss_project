@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {GeoJSON, MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 
+
 export const RailRoutesMap = () => {
     const position = {lat: 52.08692807718995, lng: 5.167149365332764};
     const [routes, setRoutes] = useState<[]>([])
@@ -26,9 +27,9 @@ export const RailRoutesMap = () => {
             {/*</Marker>*/}
             {routes.map((route, index) =>
                 <GeoJSON key={index} data={route} style={(route) => ({color: route.styles.color})}>
-                    {/*<Popup>*/}
-                    {/*    From: {route['properties']['from']}, To: {route['properties']['to']}*/}
-                    {/*</Popup>*/}
+                    <Popup>
+                        From: {route['stations'][0]}, To: {route['stations'][1]}
+                    </Popup>
                 </GeoJSON>
             )}
         </MapContainer>
