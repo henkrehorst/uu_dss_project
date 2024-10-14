@@ -32,7 +32,7 @@ def get_roadwork_data():
   }
   
   try:
-    response = response = requests.request("POST", url, headers=headers, data=payload)
+    response = requests.request("POST", url, headers=headers, data=payload)
     response.raise_for_status()
   
     roadwork_data = response.json()
