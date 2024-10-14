@@ -46,12 +46,12 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
             <Container border={1} borderColor={"black"} gap={2} maxW={"container.xl"} mt={5} mb={10}>
                 <VStack>
                     <Grid templateColumns={"repeat(3, 1fr)"} w={'100%'} gap={2}>
-                        <GridItem colSpan={[3, 3, 2]} height={"55vh"} backgroundColor={"gray.900"} borderRadius={'md'}>
+                        <GridItem colSpan={[3, 3, 2]} height={"60vh"} backgroundColor={"gray.900"} borderRadius={'md'}>
                             {mapComponent}
                         </GridItem>
                         <GridItem
                             overflow={'auto'}
-                            maxH={'55vh'}
+                            maxH={'60vh'}
                             colSpan={[3, 3, 1]}
                             borderColor={"gray.700"}
                             p={2}

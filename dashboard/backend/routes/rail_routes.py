@@ -5,6 +5,8 @@ import requests
 import json
 import numpy as np
 
+from dashboard.backend.routes.route_crowdForecast import getCrowdForecast
+
 rail_routes_blueprint = Blueprint('rail_routes', __name__)
 
 
@@ -107,18 +109,14 @@ def rail_routes():
 
         return stations_data['payload']['features']
 
-    def random_color_generator():
-        color = (np.random.randint(0, 256), np.random.randint(0, 256), np.random.randint(0, 256))
-        return tuple(color)
-
     TotalJson = []
     for station in stations:  # Loop through all rows in the list of stations to plot named "Stations"
-        stationData = rail_stops(station['fromStation'], station[
-            'toStation'])  # Get a list of intermediate stops between the from and to station
+        stationData = rail_stops(station['fromStation'], station['toStation'])  # Get a list of intermediate stops between the from and to station
         stationDataFormatted = ",".join(
             stationData)  # Convert the list of intermediate stations to a string so that it fits the getGeo API
         GeoJsonRoute = getGeo(stationDataFormatted)  # Get the GeoJSon for the given route
-        GeoJsonRoute[0]['styles'] = {'color': station['color']}
+        RouteColor = getCrowdForecast(station['fromStation'], station['toStation'])
+        GeoJsonRoute[0]['styles'] = {'color': RouteColor}
         TotalJson.append(GeoJsonRoute[0])  # Add the GeoJson to a combined list
 
     return json.dumps(TotalJson)
