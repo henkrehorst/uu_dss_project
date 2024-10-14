@@ -26,7 +26,7 @@ export const HomePage = () => {
                 </Popup>
             </Marker>
                 {routes.map((route) =>
-                <GeoJSON data={route} style={{color: '#000000'}}>
+                <GeoJSON data={route} style={{color: route['styles']['color'] as String}}>
                 </GeoJSON>
                 )}
         </MapContainer>

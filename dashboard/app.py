@@ -124,7 +124,8 @@ def rail_routes():
         stationData= rail_stops(station['fromStation'], station['toStation']) # Get a list of intermediate stops between the from and to station
         stationDataFormatted = ",".join(stationData) # Convert the list of intermediate stations to a string so that it fits the getGeo API
         GeoJsonRoute = getGeo(stationDataFormatted) # Get the GeoJSon for the given route
-        TotalJson.append(GeoJsonRoute)  # Add the GeoJson to a combined list
+        GeoJsonRoute[0]['styles'] = {'color': '#FFC917'}
+        TotalJson.append(GeoJsonRoute[0])  # Add the GeoJson to a combined list
 
     return json.dumps(TotalJson)
 
