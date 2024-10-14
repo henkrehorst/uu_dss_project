@@ -53,18 +53,21 @@ cleaned_stations_data = clean_station_data(stations_data)
 
 print(json.dumps(cleaned_stations_data, indent=4))
 
-# Create dataframe out of retrieved and cleaned data
-df_stations = pd.DataFrame(cleaned_stations_data)
+def load_to_db():
+    # Create dataframe out of retrieved and cleaned data
+    df_stations = pd.DataFrame(cleaned_stations_data)
 
-# Set up a connection to PostgreSQL with sqlalchemy
-# Note: this db connection is based on the settings on my laptop
-engine = create_engine('postgresql://student:infomdss@127.0.0.1:5434/dashboard')
+    # Set up a connection to PostgreSQL with sqlalchemy
+    # Note: this db connection is based on the settings on my laptop
+    engine = create_engine('postgresql://student:infomdss@127.0.0.1:5434/dashboard')
 
-# Write the df_stations to an SQL table
-df_stations.to_sql('nearest_stations', engine, if_exists='replace', index=False)
+    # Write the df_stations to an SQL table
+    df_stations.to_sql('nearest_stations', engine, if_exists='replace', index=False)
 
-# Read and query the db to retrieve the table
-stations_table = pd.read_sql('SELECT * FROM nearest_stations', engine)
+    # Read and query the db to retrieve the table
+    stations_table = pd.read_sql('SELECT * FROM nearest_stations', engine)
 
-# Display the data
-print(stations_table)
+    # Display the data
+    print(stations_table)
+
+load_to_db()
