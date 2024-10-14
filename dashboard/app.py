@@ -73,51 +73,71 @@ def index():
 
 @app.route('/rail_routes')
 def rail_routes():
-    RailStops = rail_stops()
-    StopListString = ",".join(RailStops)
 
-    # Primary Key from NS API
-    primary_key = "0c97e49d1a0e4a10bb2313d4bb697472"
+    stations = [
+        # These abbreviations are based on FE_codes meaning stationcodes
+        {"fromStation": "zd", "toStation": "shl"},
+        {"fromStation": "hn", "toStation": "zd"},
+        {"fromStation": "asd", "toStation": "hvs"},
+        {"fromStation": "tb", "toStation": "ht"},
+        {"fromStation": "hvs", "toStation": "shl"},
+        {"fromStation": "shl", "toStation": "alm"},
+        {"fromStation": "asd", "toStation": "hn"},
+        {"fromStation": "ut", "toStation": "ht"}
+    ]
 
-    # Placeholder for the URL
-    url = "https://gateway.apiportal.ns.nl/Spoorkaart-API/api/v1/traject"
+    def getGeo(StationList):
+        # This function fetches geodata based on a list of interlinked stations
 
-    # Headers as defined in NS API documentation
-    headers = {
-        "Cache-Control": "no-cache",
-        "Ocp-Apim-Subscription-Key": primary_key
-    }
+        # Primary Key from NS API
+        primary_key = "0c97e49d1a0e4a10bb2313d4bb697472"
 
-    # Parameters as defined in NS API documentation
-    params = {
-        "stations": StopListString
-    }
+        # Placeholder for the URL
+        url = "https://gateway.apiportal.ns.nl/Spoorkaart-API/api/v1/traject"
 
-    # Send GET request
-    try:
-        # Returns JSON file with nearest train station(s) of the put in lat/long
-        response = requests.get(url, headers=headers, params=params)
-        # Parse JSON content
-        stations_data = response.json()
+        # Headers as defined in NS API documentation
+        headers = {
+            "Cache-Control": "no-cache",
+            "Ocp-Apim-Subscription-Key": primary_key
+        }
 
-    except requests.exceptions.HTTPError as http_err:
-        print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
+        # Parameters as defined in NS API documentation
+        params = {
+            "stations": StationList #List of all intermediate stations on the railroute
+        }
 
-    # # This should be converted to a function that DOES work
+        # Send GET request
+        try:
+            # Returns JSON file with nearest train station(s) of the put in lat/long
+            response = requests.get(url, headers=headers, params=params)
+            # Parse JSON content
+            stations_data = response.json()
+
+        except requests.exceptions.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
+
+        return stations_data['payload']['features']
+
     def random_color_generator():
-        return tuple(np.random.randint(0, 256) for _ in range(3))
+        color = (np.random.randint(0, 256),np.random.randint(0, 256),np.random.randint(0, 256))
+        return tuple(color)
 
-    return json.dumps(stations_data['payload']['features'])
+    TotalJson = []
+    for station in stations: # Loop through all rows in the list of stations to plot named "Stations"
+        stationData= rail_stops(station['fromStation'], station['toStation']) # Get a list of intermediate stops between the from and to station
+        stationDataFormatted = ",".join(stationData) # Convert the list of intermediate stations to a string so that it fits the getGeo API
+        GeoJsonRoute = getGeo(stationDataFormatted) # Get the GeoJSon for the given route
+        TotalJson.append(GeoJsonRoute)  # Add the GeoJson to a combined list
+
+    return json.dumps(TotalJson)
 
 
 @app.route('/rail_stops')
-def rail_stops():
+def rail_stops(from_station, to_station):
+    # This function fetches a list of intermediate stops between the from and to station
 
     # Primary Key from NS API
     primary_key = "0c97e49d1a0e4a10bb2313d4bb697472"
-
-    # From to station pairs
-    stations = {"fromStation":"zl","toStation":"amf"}
 
     # Placeholder for the URL
     url = "https://gateway.apiportal.ns.nl/reisinformatie-api/api/v3/trips"
@@ -130,8 +150,8 @@ def rail_stops():
 
     # Parameters as defined in NS API documentation
     params = {
-        "fromStation": stations["fromStation"],
-        "toStation": stations["toStation"],
+        "fromStation": from_station,
+        "toStation": to_station,
         "passing": True #Shows intermediate stations
     }
 
@@ -145,18 +165,17 @@ def rail_stops():
     except requests.exceptions.HTTPError as http_err:
         print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
 
-    # Cleaning the data so it becomes more readable and removes uneccesary information
-    def clean_stop_data(data):
-        cleaned_data = []
-        # Loop over all results in the retrieved data to select only necessary attributes
+    # The rail_stops() function originally returns a list of station names, subsequent API's use list of Stationcodes, so called FE_codes
+    def convert_stop_data(data):
+        converted_data = []
         for stop in data['trips'][0]['legs'][0]['stops']:
-            cleaned_data.append(FE_Codes(stop['name']))
+            converted_data.append(FE_Codes(stop['name']))
 
-        return cleaned_data
+        return converted_data
 
-    cleaned_stop_data = clean_stop_data(stops_data) #uses the clean_stop_data to clean the API results
+    converted_stop_data = convert_stop_data(stops_data) #uses the convert_stop_data to loop through every stationname and convert it to FE_codes
 
-    return cleaned_stop_data
+    return converted_stop_data
 
 # Converts the station name to the station code or FE_code captured by the NS api
 def FE_Codes(StationName):
@@ -188,7 +207,7 @@ def FE_Codes(StationName):
     except requests.exceptions.HTTPError as http_err:
         print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
 
-    StationCode = str(FE_data['payload'][0]['code'])
+    StationCode = str(FE_data['payload'][0]['code']) # Returns the FE_code as a string
 
     return StationCode
 
