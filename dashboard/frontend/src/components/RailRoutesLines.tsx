@@ -21,9 +21,9 @@ export const RailRoutesLines = () => {
                 </Tr>
             </Thead>
             <Tbody>
-                {lines === null ? <Tr><Skeleton/></Tr> :
+                {lines === null ? <Tr><Td><Skeleton/></Td></Tr> :
                     lines.map((line) => (
-                        <Tr>
+                        <Tr key={line.id}>
                             <Td>
                                 <Button w={'100%'}
                                         leftIcon={<Search2Icon/>}
