@@ -25,8 +25,8 @@ export const HomePage = () => {
                     A pretty CSS3 popup. <br/> Easily customizable.
                 </Popup>
             </Marker>
-                {routes.map((route) =>
-                <GeoJSON data={route} style={{color: route['styles']['color'] as String}}>
+                {routes.map((route, index) =>
+                <GeoJSON key={index} data={route} style={{color: route['styles']['color'] as String}}>
                 </GeoJSON>
                 )}
         </MapContainer>

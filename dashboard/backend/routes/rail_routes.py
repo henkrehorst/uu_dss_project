@@ -15,51 +15,60 @@ def get_rail_routes_lines():
             "id": "1",
             "name": "Zaandam – Schiphol ",
             "fromStation": "zd",
-            "toStation": "shl"
+            "toStation": "shl",
+            "color": "#FFC917"
         },
         {
             "id": "2",
             "name": "Hoorn – Zaandam ",
             "fromStation": "hn",
-            "toStation": "zd"
+            "toStation": "zd",
+            "color": "#FF7700"
         },
         {
             "id": "3",
             "name": "Amsterdam Centraal – Hilversum ",
             "fromStation": "asd",
-            "toStation": "hvs"
+            "toStation": "hvs",
+            "color": "#009A42"
         },
         {
             "id": "4",
             "name": "Tilburg – ’s Hertogenbosch ",
             "fromStation": "tb",
-            "toStation": "ht"
+            "toStation": "ht",
+            "color": "#FFC917"
         },
         {
             "id": "5",
             "name": "Hilversum – Schiphol ",
             "fromStation": "hvs",
-            "toStation": "shl"
+            "toStation": "shl",
+            "color": "#0063D3"
         },
         {
             "id": "6",
             "name": "Schiphol – Almere Centrum ",
             "fromStation": "shl",
-            "toStation": "alm"
+            "toStation": "alm",
+            "color": "#DB0029"
         },
         {
             "id": "7",
             "name": "Amsterdam Centraal – Hoorn ",
             "fromStation": "asd",
-            "toStation": "hn"
+            "toStation": "hn",
+            "color": "#009A42"
         },
         {
             "id": "8",
             "name": "Utrecht – ’s Hertogenbosch ",
             "fromStation": "ut",
-            "toStation": "ht"
+            "toStation": "ht",
+            "color": "#FF7700"
         }
     ]
+
 
 @rail_routes_blueprint.route('/rail_routes')
 def rail_routes():
@@ -83,7 +92,7 @@ def rail_routes():
 
         # Parameters as defined in NS API documentation
         params = {
-            "stations": StationList #List of all intermediate stations on the railroute
+            "stations": StationList  # List of all intermediate stations on the railroute
         }
 
         # Send GET request
@@ -99,15 +108,18 @@ def rail_routes():
         return stations_data['payload']['features']
 
     def random_color_generator():
-        color = (np.random.randint(0, 256),np.random.randint(0, 256),np.random.randint(0, 256))
+        color = (np.random.randint(0, 256), np.random.randint(0, 256), np.random.randint(0, 256))
         return tuple(color)
 
     TotalJson = []
-    for station in stations: # Loop through all rows in the list of stations to plot named "Stations"
-        stationData= rail_stops(station['fromStation'], station['toStation']) # Get a list of intermediate stops between the from and to station
-        stationDataFormatted = ",".join(stationData) # Convert the list of intermediate stations to a string so that it fits the getGeo API
-        GeoJsonRoute = getGeo(stationDataFormatted) # Get the GeoJSon for the given route
-        TotalJson.append(GeoJsonRoute)  # Add the GeoJson to a combined list
+    for station in stations:  # Loop through all rows in the list of stations to plot named "Stations"
+        stationData = rail_stops(station['fromStation'], station[
+            'toStation'])  # Get a list of intermediate stops between the from and to station
+        stationDataFormatted = ",".join(
+            stationData)  # Convert the list of intermediate stations to a string so that it fits the getGeo API
+        GeoJsonRoute = getGeo(stationDataFormatted)  # Get the GeoJSon for the given route
+        GeoJsonRoute[0]['styles'] = {'color': station['color']}
+        TotalJson.append(GeoJsonRoute[0])  # Add the GeoJson to a combined list
 
     return json.dumps(TotalJson)
 
@@ -132,7 +144,7 @@ def rail_stops(from_station, to_station):
     params = {
         "fromStation": from_station,
         "toStation": to_station,
-        "passing": True #Shows intermediate stations
+        "passing": True  # Shows intermediate stations
     }
 
     # Send GET request
@@ -153,13 +165,14 @@ def rail_stops(from_station, to_station):
 
         return converted_data
 
-    converted_stop_data = convert_stop_data(stops_data) #uses the convert_stop_data to loop through every stationname and convert it to FE_codes
+    converted_stop_data = convert_stop_data(
+        stops_data)  # uses the convert_stop_data to loop through every stationname and convert it to FE_codes
 
     return converted_stop_data
 
+
 # Converts the station name to the station code or FE_code captured by the NS api
 def FE_Codes(StationName):
-
     # Primary Key from NS API
     primary_key = "0c97e49d1a0e4a10bb2313d4bb697472"
 
@@ -187,6 +200,6 @@ def FE_Codes(StationName):
     except requests.exceptions.HTTPError as http_err:
         print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
 
-    StationCode = str(FE_data['payload'][0]['code']) # Returns the FE_code as a string
+    StationCode = str(FE_data['payload'][0]['code'])  # Returns the FE_code as a string
 
     return StationCode
