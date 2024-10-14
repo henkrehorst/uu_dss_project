@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {GeoJSON, MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 
 export const RailRoutesMap = () => {
-    const position = {lat: 51.505, lng: -0.09};
+    const position = {lat: 52.08692807718995, lng: 5.167149365332764};
     const [routes, setRoutes] = useState<[]>([])
 
     useEffect(() => {
@@ -16,7 +16,8 @@ export const RailRoutesMap = () => {
     return (
         <MapContainer center={position} zoom={13} scrollWheelZoom={true} style={{height: '100%', borderRadius: '0.375rem'}}>
             <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                /*Extra map colors https://leaflet-extras.github.io/leaflet-providers/preview/*/
+                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
             />
             <Marker position={position}>
                 <Popup>
