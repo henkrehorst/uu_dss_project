@@ -14,16 +14,16 @@ export const RailRoutesMap = () => {
     }, [])
 
     return (
-        <MapContainer center={position} zoom={13} scrollWheelZoom={true} style={{height: '100%', borderRadius: '0.375rem'}}>
+        <MapContainer center={position} zoom={8} scrollWheelZoom={true} style={{height: '100%', borderRadius: '0.375rem'}}>
             <TileLayer
                 /*Extra map colors https://leaflet-extras.github.io/leaflet-providers/preview/*/
                 url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
             />
-            <Marker position={position}>
-                <Popup>
-                    A pretty CSS3 popup. <br/> Easily customizable.
-                </Popup>
-            </Marker>
+            {/*<Marker position={position}>*/}
+            {/*    <Popup>*/}
+            {/*        A pretty CSS3 popup. <br/> Easily customizable.*/}
+            {/*    </Popup>*/}
+            {/*</Marker>*/}
             {routes.map((route, index) =>
                 <GeoJSON key={index} data={route} style={(route) => ({color: route.styles.color})}>
                     {/*<Popup>*/}
