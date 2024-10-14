@@ -1,5 +1,3 @@
-from pickle import FALSE
-
 import pandas as pd
 import plotly.express as px
 from flask import Flask, render_template_string, render_template
@@ -8,7 +6,6 @@ from sqlalchemy import create_engine, text, inspect, Table
 import requests
 import json
 import numpy as np
-from sympy import false
 
 
 # Load the csv file into the db
