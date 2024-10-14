@@ -1,7 +1,8 @@
 import requests
 import json
+import pandas as pd
+from sqlalchemy import create_engine
 
-#created a function to encapsulate all the code
 def get_roadwork_data():
   url = "https://melvin.ndw.nu/melvinservice/rest/public/all"
 
@@ -65,4 +66,15 @@ def get_roadwork_data():
   except requests.exceptions.RequestException as req_err:
     print(f"An error occurred: {req_err}")
 
-get_roadwork_data()
+def load_to_db():
+    engine = create_engine('postgresql://127.0.0.1:5432/dashboard')
+    roadwork_data = get_roadwork_data()
+
+    if roadwork_data:  # Check if roadwork_data is not None
+        df_roadworks = pd.json_normalize(roadwork_data)  # Flatten the JSON structure if needed
+        df_roadworks.to_sql('roadworks', engine, if_exists='replace', index=False)
+        print("Data loaded successfully into the database.")
+    else:
+        print("No data to load.")
+
+load_to_db()
