@@ -10,33 +10,13 @@ def get_roadwork_data():
     "filter": {
       "dateFrom": "2024-10-11",
       "dateTill": "2024-10-18",
-      "situationTypes": [
-          "ROADWORKS"
-          ],
-      "situationVehicleTypes": [
-          "CARS"
-          ],
+      "situationTypes": [],
+      "situationVehicleTypes": [],
       "project": [],
-      "statuses": [
-          "PLANNED", 
-          "ONGOING", 
-          "COMPLETED"
-          ],
-      "periodStatuses": [
-          "ACTIVE",
-          "PLANNED"
-          ],
-      "delays": [
-          "NO_DELAY",
-          "MINOR", 
-          "MAJOR"
-          ],
-      "impacts": [
-        "LITTLE",
-        "AVERAGE",
-        "BIG",
-        "HUGE"
-      ],
+      "statuses": [],
+      "periodStatuses": [];
+      "delays": [],
+      "impacts": [],
       "roadAuthorities": [],
       "restrictionTypes": [],
       "emergencyServicesAllowed": [],
@@ -52,7 +32,7 @@ def get_roadwork_data():
   }
   
   try:
-    response = response = requests.request("POST", url, headers=headers, data=payload)
+    response = requests.request("POST", url, headers=headers, data=payload)
     response.raise_for_status()
   
     roadwork_data = response.json()
