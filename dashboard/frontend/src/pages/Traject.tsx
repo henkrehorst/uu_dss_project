@@ -7,7 +7,7 @@ import {TravelersCompensationsLineGraph} from "@/components/TravelersCompensatio
 import {TBSPerformanceGauge} from "@/components/TBSPerformanceGauge.tsx";
 import {InfrastructurePerformanceGauge} from "@/components/InfrastructurePerformanceGauge.tsx";
 import {EquipmentPerformanceGauge} from "@/components/EquipmentPerformanceGauge.tsx";
- import {RailRoutesLines} from "@/Components/RailRoutesLines.tsx";
+import {RailRoutesLines} from "@/components/RailRoutesLines.tsx";
 
 export const TrajectPage = () => {
     let {traject} = useParams<{traject: string}>()
