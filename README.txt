@@ -1,10 +1,13 @@
-Team 08 - NS Tough Autumn Dashboard
+# Team 08 - NS Tough Autumn Dashboard
 
 Running the app:
-	-- Henk
+- Open a terminal or command prompt
+- CD to root the directory of this codebase
+- run 'docker compose up'. In some versions, you might need docker-compose up
+- The Dashboard is available at http://localhost:8084/traject/test
     
-Link to the Video: 
-Link to the Codebase: 
+Link to the Video: https://drive.google.com/file/d/1GKW8umlqtfMP0jyj00yFB7SBTx7oIUyE/view
+Link to the Codebase: https://github.com/henkrehorst/uu_dss_project
 Dataset: all data we are using so far is retrieved directly from various API's
 Other Links: NA
 
