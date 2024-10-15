@@ -61,11 +61,6 @@ _load_data_to_db()
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/')
-def index():
-    # As soon as the page is loaded, the data is retrieved from the db and the graph is created
-    # And is put in the HTML div
-    return render_template('index.html', plot_html=generate_population_graph())
 
 
 @app.route('/rail_routes')
