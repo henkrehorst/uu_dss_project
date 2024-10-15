@@ -8,9 +8,7 @@ Link to the Codebase:
 Dataset: all data we are using so far is retrieved directly from various API's
 Other Links: NA
 
-
 Data Collection and Preparation
-
 	route_crowdForecast.py
 	Retrieves the crowd forecast from the NS API for the required route and returns the color for each forecasted level (low, medium, high).
 
