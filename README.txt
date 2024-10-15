@@ -1,4 +1,4 @@
-Team 08 - Dashboard for Exploration of Effects of Phenomenon Y
+Team 08 - NS Tough Autumn Dashboard
 
 Running the app:
 	-- Henk
