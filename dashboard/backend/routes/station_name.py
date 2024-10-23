@@ -38,4 +38,4 @@ def getStationName(UcCode):
 
     StationName = str(Station_data['payload'][0]['namen']['middel'])  # Returns the StationName as a string
 
-    return StationName
+    return StationName 
