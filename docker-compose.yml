@@ -1,28 +1,28 @@
 version: '3'
 services:
-    flask_app_project:
-        build:
-            context: .
-            dockerfile: dashboard/Dockerfile_dashboard  # Specify the unique Dockerfile name
-        ports:
-            - 8080:5000
-        volumes:
-            - ./data:/data
-        environment:
-            - NAME=Flask-App
-            - PYTHONPATH=/app
-        working_dir: /app
-        develop: 
-            watch:
-                - action: sync+restart
-                  path: ./dashboard/
-                  target: /app
-                - action: rebuild
-                  path: ./dashboard/requirements.txt
-                  target: /app
-        depends_on:
-            db_dashboard_project:
-                condition: service_healthy
+#    flask_app_project:
+#        build:
+#            context: .
+#            dockerfile: dashboard/Dockerfile_dashboard  # Specify the unique Dockerfile name
+#        ports:
+#            - 8080:5000
+#        volumes:
+#            - ./data:/data
+#        environment:
+#            - NAME=Flask-App
+#            - PYTHONPATH=/app
+#        working_dir: /app
+#        develop:
+#            watch:
+#                - action: sync+restart
+#                  path: ./dashboard/
+#                  target: /app
+#                - action: rebuild
+#                  path: ./dashboard/requirements.txt
+#                  target: /app
+#        depends_on:
+#            db_dashboard_project:
+#                condition: service_healthy
     
     jupyter_project:
         build:

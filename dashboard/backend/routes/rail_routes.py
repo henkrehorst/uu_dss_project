@@ -3,10 +3,9 @@ import os
 from flask import Blueprint, abort
 import requests
 import json
-import numpy as np
 
-from dashboard.backend.routes.route_crowdForecast import getCrowdForecast
-from dashboard.backend.routes.station_name import getStationName
+from routes.route_crowdForecast import getCrowdForecast
+from routes.station_name import getStationName
 
 rail_routes_blueprint = Blueprint('rail_routes', __name__)
 
