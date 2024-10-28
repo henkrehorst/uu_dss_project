@@ -9,3 +9,4 @@ python-gnupg
 requests
 flask-cors
 python-dotenv
+pymupdf
