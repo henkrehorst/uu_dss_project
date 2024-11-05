@@ -10,9 +10,10 @@ Trein prijzen 2017 ->
     - end chapter: Traject Vrij\n
 """
 # read pdf file with pymupdf from data/treinprijzen2019.pdf
-pdf_path = './data/treinprijzen2019.pdf'
+pdf_path = './data/treinprijzen2024.pdf'
 pdf = pymupdf.open(pdf_path)
 
+print("hello world")
 
 def find_pages_by_chapter(pdf_document, chapter, next_chapter):
     for page_number in range(pdf_document.page_count):
