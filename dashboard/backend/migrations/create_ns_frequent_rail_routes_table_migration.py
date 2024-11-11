@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, inspect
+from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, inspect, Numeric
 from sqlalchemy.dialects.postgresql import JSONB
 
 
@@ -14,7 +14,10 @@ def migrate():
               Column('name', String(length=255), nullable=False),
               Column('from_station', String(length=3), nullable=False),
               Column('to_station', String(length=3), nullable=False),
+              Column('from_coordinates', String(length=60), nullable=False),
+              Column('to_coordinates', String(length=60), nullable=False),
               Column('color', String(length=7), nullable=False),
+              Column('trip_duration', Numeric(10,2), nullable=False),
               Column('geojson', JSONB, nullable=False)
               )
         metadata.create_all(engine)

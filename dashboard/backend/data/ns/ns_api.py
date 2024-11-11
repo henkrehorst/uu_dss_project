@@ -1,7 +1,7 @@
 import requests
 
 
-def rail_stops(from_station, to_station):
+def rail_stops_and_trip_duration(from_station, to_station):
     # This function fetches a list of intermediate stops between the from and to station
 
     # Primary Key from NS API
@@ -30,6 +30,12 @@ def rail_stops(from_station, to_station):
         # Parse JSON content
         stops_data = response.json()
 
+        # This part retrieves all the possible routes from the trips api and searches for the 'plannedDurationInMinutes' in the api
+        trips = stops_data.get('trips', [])
+        travel_times = [trip['plannedDurationInMinutes'] for trip in trips]
+        # Here the avarage train times are calculated
+        avg_train_time = sum(travel_times) / len(travel_times) if travel_times else None
+
     except requests.exceptions.HTTPError as http_err:
         print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
 
@@ -44,7 +50,7 @@ def rail_stops(from_station, to_station):
     converted_stop_data = convert_stop_data(
         stops_data)  # uses the convert_stop_data to loop through every stationname and convert it to FE_codes
 
-    return converted_stop_data
+    return converted_stop_data, avg_train_time
 
 
 # Converts the station name to the station code or FE_code captured by the NS api
@@ -113,7 +119,7 @@ def get_geo_json(StationList):
     return stations_data['payload']['features']
 
 
-def getStationName(UcCode):
+def get_station_information(UcCode):
     # Primary Key from NS API
     primary_key = "0c97e49d1a0e4a10bb2313d4bb697472"
 
@@ -141,5 +147,8 @@ def getStationName(UcCode):
         print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
 
     StationName = str(Station_data['payload'][0]['namen']['middel'])  # Returns the StationName as a string
+    latitude = str(Station_data['payload'][0]['lat'])
+    longitude = str(Station_data['payload'][0]['lng'])
+    coordinates = (latitude + "," + longitude)
 
-    return StationName
+    return StationName, coordinates

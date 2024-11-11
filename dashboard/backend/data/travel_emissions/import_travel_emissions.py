@@ -36,7 +36,7 @@ def import_emissions_for_vehicles():
 
         # save to database
         engine = create_engine(os.getenv('DATABASE_URL'))
-        df.to_sql("travel_emissions", con=engine, if_exists="replace")
+        df.to_sql("travel_emissions", con=engine, if_exists="replace", index=False)
 
         # print success message
         print("Emissions data successfully imported into database!")

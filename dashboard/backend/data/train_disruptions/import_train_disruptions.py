@@ -30,6 +30,6 @@ def import_train_disruptions():
 
     # save train disruptions to database
     engine = create_engine(os.getenv('DATABASE_URL'))
-    average_delay_per_line.to_sql('train_disruptions', engine, if_exists='replace')
+    average_delay_per_line.to_sql('train_disruptions', engine, if_exists='replace', index=False)
 
     print("Train disruptions imported successfully")
