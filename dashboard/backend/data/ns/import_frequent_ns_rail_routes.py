@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from sqlalchemy import create_engine
-from data.ns.ns_api import rail_stops_and_trip_duration, get_geo_json, get_station_information
+from data.ns.ns_api import rail_stops_and_trip_duration, get_geo_json, get_station_information, get_tariff_units
 import json
 
 
@@ -30,6 +30,7 @@ def import_frequent_rail_routes():
         frequent_rail_routes.at[index, 'trip_duration'] = duration
         frequent_rail_routes.at[index, 'from_coordinates'] = from_coordinates
         frequent_rail_routes.at[index, 'to_coordinates'] = to_coordinates
+        frequent_rail_routes.at[index, 'tariff_units'] = get_tariff_units(row['from_station'], row['to_station'])
 
     # save frequent rail routes to database
     frequent_rail_routes.to_sql(table_name, engine, if_exists='replace', index=False)

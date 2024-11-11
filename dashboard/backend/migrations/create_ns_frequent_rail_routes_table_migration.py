@@ -18,6 +18,7 @@ def migrate():
               Column('to_coordinates', String(length=60), nullable=False),
               Column('color', String(length=7), nullable=False),
               Column('trip_duration', Numeric(10,2), nullable=False),
+              Column('tariff_units', Integer, nullable=False),
               Column('geojson', JSONB, nullable=False)
               )
         metadata.create_all(engine)

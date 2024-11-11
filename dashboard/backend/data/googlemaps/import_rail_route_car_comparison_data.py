@@ -18,11 +18,8 @@ def import_rail_routes_car_times_by_google_maps():
 
     # iterate over all rail routes
     for index, row in frequent_rail_routes.iterrows():
-        from_station = str(row['name']).split(' – ')[0]
-        to_station = str(row['name']).split(' – ')[1]
-
         # get travel time by car
-        travel_time = get_car_travel_time(from_station, to_station)
+        travel_time = get_car_travel_time(row['from_coordinates'], row['to_coordinates'])
 
         # append to list
         rail_route_car_times.append({

@@ -152,3 +152,35 @@ def get_station_information(UcCode):
     coordinates = (latitude + "," + longitude)
 
     return StationName, coordinates
+
+
+def get_tariff_units(fromStation, toStation):
+    # Primary Key from NS API
+    primary_key = "506c530bc78e42238652c7ffba855a3c"
+
+    # Placeholder for the URL
+    url = "https://gateway.apiportal.ns.nl/public-prijsinformatie/prices"
+
+    # Headers as defined in NS API documentation
+    headers = {
+        "Cache-Control": "no-cache",
+        "Ocp-Apim-Subscription-Key": primary_key
+    }
+
+    # Specifying the from and to stations for a route
+    params = {
+        "fromStation": fromStation,
+        "toStation": toStation
+    }
+
+    # Send GET request
+    try:
+        # Returns JSON file with nearest train station(s) of the put in lat/long
+        response = requests.get(url, headers=headers, params=params)
+        # Parse JSON content
+        stations_data = response.json()
+
+    except requests.exceptions.HTTPError as http_err:
+        print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
+
+    return stations_data['priceOptions'][1]['tariefEenheden']
