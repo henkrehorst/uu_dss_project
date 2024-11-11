@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
-from migrations import sample_table_migration, create_ns_tariff_table_migration
+from migrations import sample_table_migration, create_ns_tariff_table_migration, \
+    create_ns_frequent_rail_routes_table_migration
 
 if __name__ == '__main__':
     print("Running migration...")
@@ -9,5 +10,6 @@ if __name__ == '__main__':
     # Run migrations scripts
     sample_table_migration.migrate()
     create_ns_tariff_table_migration.migrate()
+    create_ns_frequent_rail_routes_table_migration.migrate()
 
     print("Migrations finished!")
