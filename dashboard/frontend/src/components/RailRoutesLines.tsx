@@ -1,9 +1,15 @@
 import {useEffect, useState} from "react";
 import {Button, Skeleton, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
 import {Search2Icon} from "@chakra-ui/icons";
+import {Link as ReactRouterLink} from 'react-router-dom'
 
 export const RailRoutesLines = () => {
-    const [lines, setLines] = useState<null | { id: string, name: string }[]>(null);
+    const [lines, setLines] = useState<null | {
+        id: string,
+        name: string,
+        from_station: string,
+        to_station: string
+    }[]>(null);
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/rail_routes/lines`).then(res => {
@@ -26,6 +32,8 @@ export const RailRoutesLines = () => {
                         <Tr key={line.id}>
                             <Td>
                                 <Button w={'100%'}
+                                        as={ReactRouterLink}
+                                        to={`/route/${line.from_station}/${line.to_station}`}
                                         leftIcon={<Search2Icon/>}
                                         justifyContent={'left'}
                                         key={line.id}
