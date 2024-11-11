@@ -2,57 +2,57 @@
   {
     "id": "1",
     "name": "Zaandam – Schiphol ",
-    "from_station": "zd",
-    "to_station": "shl",
+    "from_station": "731",
+    "to_station": "561",
     "color": "#FFC917"
   },
   {
     "id": "2",
     "name": "Hoorn – Zaandam ",
-    "from_station": "hn",
-    "to_station": "zd",
+    "from_station": "337",
+    "to_station": "731",
     "color": "#FF7700"
   },
   {
     "id": "3",
     "name": "Amsterdam Centraal – Hilversum ",
-    "from_station": "asd",
-    "to_station": "hvs",
+    "from_station": "58",
+    "to_station": "322",
     "color": "#009A42"
   },
   {
     "id": "4",
     "name": "Tilburg – ’s Hertogenbosch ",
-    "from_station": "tb",
-    "to_station": "ht",
+    "from_station": "597",
+    "to_station": "319",
     "color": "#FFC917"
   },
   {
     "id": "5",
     "name": "Hilversum – Schiphol ",
-    "from_station": "hvs",
-    "to_station": "shl",
+    "from_station": "322",
+    "to_station": "561",
     "color": "#0063D3"
   },
   {
     "id": "6",
     "name": "Schiphol – Almere Centrum ",
-    "from_station": "shl",
-    "to_station": "alm",
+    "from_station": "561",
+    "to_station": "80",
     "color": "#DB0029"
   },
   {
     "id": "7",
     "name": "Amsterdam Centraal – Hoorn ",
-    "from_station": "asd",
-    "to_station": "hn",
+    "from_station": "58",
+    "to_station": "337",
     "color": "#009A42"
   },
   {
     "id": "8",
     "name": "Utrecht – ’s Hertogenbosch ",
-    "from_station": "ut",
-    "to_station": "ht",
+    "from_station": "621",
+    "to_station": "319",
     "color": "#FF7700"
   }
 ]

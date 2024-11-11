@@ -40,17 +40,18 @@ def rail_stops_and_trip_duration(from_station, to_station):
         print(f"HTTP error occurred: {http_err}")  # e.g., 404 Not Found
 
     # The rail_stops() function originally returns a list of station names, subsequent API's use list of Stationcodes, so called FE_codes
-    def convert_stop_data(data):
-        converted_data = []
-        for stop in data['trips'][0]['legs'][0]['stops']:
-            converted_data.append(FE_Codes(stop['name']))
+    # def convert_stop_data(data):
+    #     converted_data = []
+    #     for stop in data['trips'][0]['legs'][0]['stops']:
+    #         converted_data.append(FE_Codes(stop['name']))
+    #
+    #     return converted_data
+    #
+    # converted_stop_data = convert_stop_data(
+    #     stops_data)  # uses the convert_stop_data to loop through every stationname and convert it to FE_codes
 
-        return converted_data
-
-    converted_stop_data = convert_stop_data(
-        stops_data)  # uses the convert_stop_data to loop through every stationname and convert it to FE_codes
-
-    return converted_stop_data, avg_train_time
+    # return converted_stop_data, avg_train_time
+    return stops_data, avg_train_time
 
 
 # Converts the station name to the station code or FE_code captured by the NS api
@@ -120,6 +121,7 @@ def get_geo_json(StationList):
 
 
 def get_station_information(UcCode):
+    print(UcCode)
     # Primary Key from NS API
     primary_key = "0c97e49d1a0e4a10bb2313d4bb697472"
 
