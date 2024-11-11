@@ -1,7 +1,7 @@
 import json
 import os
 
-from flask import Blueprint
+from flask import Blueprint, abort
 import pandas as pd
 from sqlalchemy import create_engine
 
@@ -16,6 +16,23 @@ def get_rail_routes_lines():
         f"select id, name, from_station, to_station, color from ns_frequent_rail_routes", engine)
 
     return frequent_rail_routes.to_dict(orient='records')
+
+
+@rail_routes_blueprint.route("/rail_routes/lines/<from_station>/<to_station>")
+def get_rail_route_by_stations(from_station, to_station):
+    engine = create_engine(os.getenv('DATABASE_URL'))
+
+    rail_route = pd.read_sql_query(
+        f"select * from ns_frequent_rail_routes where from_station = '{from_station}' and to_station = '{to_station}'",
+        engine)
+
+    if rail_route.shape[0] == 0:
+        abort(404, description="No rail route found")
+
+    # fix geojson format
+    rail_route['geojson'] = rail_route['geojson'].apply(json.loads)
+
+    return rail_route.to_dict(orient='records')[0]
 
 
 @rail_routes_blueprint.route('/rail_routes')

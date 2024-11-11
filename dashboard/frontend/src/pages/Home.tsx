@@ -1,34 +1,15 @@
 import "leaflet/dist/leaflet.css";
-import {GeoJSON, MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
-import {useEffect, useState} from "react";
+import {RailRoutesMap} from "@/components/RailRoutesMap.tsx";
+import {RailRoutesLines} from "@/components/RailRoutesLines.tsx";
+import {HomeDashboardLayout} from "@/layouts/HomeDashboardLayout.tsx";
 
 export const HomePage = () => {
-    const position = {lat: 52.522501, lng: 6.047887};
-    const [routes, setRoutes] = useState<[]>([])
-
-    useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/rail_routes`).then(res => {
-            res.json().then(data => {
-                setRoutes(data)
-            })
-        })
-    }, [])
 
     return (
-        <MapContainer center={position} zoom={13} scrollWheelZoom={true} style={{height: '100vh'}}>
-            {/*Extra map colors https://leaflet-extras.github.io/leaflet-providers/preview/*/}
-            <TileLayer
-                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-            />
-            <Marker position={position}>
-                <Popup>
-                    A pretty CSS3 popup. <br/> Easily customizable.
-                </Popup>
-            </Marker>
-                {routes.map((route, index) =>
-                <GeoJSON key={index} data={route} style={{color: route['styles']['color'] as String}}>
-                </GeoJSON>
-                )}
-        </MapContainer>
+        <HomeDashboardLayout
+          mapComponent={<RailRoutesMap/>}
+          title={'Tough Autumn Dashboard'}
+          railLinesComponent={<RailRoutesLines/>}
+      />
     )
 }

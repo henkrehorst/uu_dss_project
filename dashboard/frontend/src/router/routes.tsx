@@ -1,5 +1,5 @@
 import {createBrowserRouter} from "react-router-dom";
-import {TrajectPage} from "@/pages/Traject.tsx";
+import {RailRoutePage} from "@/pages/RailRoute.tsx";
 import {HomePage} from "@/pages/Home.tsx";
 
 export const routes = createBrowserRouter([
@@ -8,7 +8,7 @@ export const routes = createBrowserRouter([
         element: <HomePage/>
     },
     {
-        path: "/traject/:traject",
-        element: <TrajectPage/>
+        path: "/route/:fromStation/:toStation",
+        element: <RailRoutePage/>
     }
 ])
