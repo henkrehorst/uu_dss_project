@@ -25,7 +25,7 @@ export const EmissionComparisonBarChart: FC<EmissionComparisonLineBarProps> = ({
         <>
             <Heading size={'md'}
                      textAlign='center'
-                     color={'blue.500'}>Comparison of average CO2 emissions per trip by vehicle</Heading>
+                     color={'blue.500'}>Comparison of average CO2 emissions by vehicle</Heading>
             {data == undefined ? <Spinner/> :
                 <ResponsiveBar
                     data={data}

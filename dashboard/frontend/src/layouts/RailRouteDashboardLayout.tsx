@@ -17,23 +17,21 @@ interface DashboardLayoutProps {
     mapComponent: ReactNode,
     railLinesComponent: ReactNode,
     railRouteName: string,
-    gaugeSlot1: ReactNode,
-    gaugeSlot2: ReactNode,
-    gaugeSlot3: ReactNode,
-    lineGraphSlot1: ReactNode,
-    lineGraphSlot2: ReactNode,
+    chartSlot1: ReactNode,
+    chartSlot2: ReactNode,
+    chartSlot3: ReactNode,
+    chartSlot4: ReactNode,
 
 }
 
 export const RailRouteDashboardLayout: FC<DashboardLayoutProps> = ({
                                                                        title,
                                                                        mapComponent,
-                                                                       gaugeSlot1,
-                                                                       gaugeSlot3,
-                                                                       gaugeSlot2,
+                                                                       chartSlot1,
+                                                                       chartSlot2,
                                                                        railLinesComponent,
-                                                                       lineGraphSlot2,
-                                                                       lineGraphSlot1,
+                                                                       chartSlot4,
+                                                                       chartSlot3,
     railRouteName
                                                                    }) => {
     return (
@@ -71,17 +69,20 @@ export const RailRouteDashboardLayout: FC<DashboardLayoutProps> = ({
                             {railLinesComponent}
                         </GridItem>
                     </Grid>
-                    <SimpleGrid columns={[1, 1]} gap={2} w={'100%'}>
+                    <SimpleGrid columns={[1, 1, 2]} gap={2} w={'100%'}>
                         <Box borderColor={"gray.700"} p={2} borderWidth="1px" borderRadius="md">
-                            {gaugeSlot1}
+                            {chartSlot1}
+                        </Box>
+                        <Box borderColor={"gray.700"} p={2} borderWidth="1px" borderRadius="md">
+                            {chartSlot2}
                         </Box>
                     </SimpleGrid>
                     <SimpleGrid columns={[1, 1, 2]} w={'100%'} gap={2}>
                         <Box borderColor={"gray.700"} p={2} borderWidth="1px" borderRadius="md">
-                            {lineGraphSlot1}
+                            {chartSlot3}
                         </Box>
                         <Box borderColor={"gray.700"} p={2} borderWidth="1px" borderRadius="md">
-                            {lineGraphSlot2}
+                            {chartSlot4}
                         </Box>
                     </SimpleGrid>
                 </VStack>

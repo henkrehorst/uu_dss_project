@@ -23,9 +23,10 @@ export const PriceComparisonLineGraph: FC<PriceComparisonLineGraphProps> = ({fro
         <>
             <Heading size={'md'}
                      textAlign='center'
-                     color={'blue.500'}>Price comparison</Heading>
+                     color={'blue.500'}>Price comparison between car and train</Heading>
             {graphData === null ? <Spinner/> :
                 <ResponsiveLine
+                    colors={['#FFC917', '#0063D3', '#FFC917', '#0063D3']}
                     data={graphData}
                     margin={{top: 50, right: 110, bottom: 50, left: 60}}
                     xScale={{
@@ -46,7 +47,7 @@ export const PriceComparisonLineGraph: FC<PriceComparisonLineGraphProps> = ({fro
                         tickSize: 5,
                         tickPadding: 5,
                         tickRotation: 0,
-                        legend: 'transportation',
+                        legend: 'Year',
                         legendOffset: 36,
                         legendPosition: 'middle',
                         truncateTickAt: 0
@@ -55,7 +56,7 @@ export const PriceComparisonLineGraph: FC<PriceComparisonLineGraphProps> = ({fro
                         tickSize: 5,
                         tickPadding: 5,
                         tickRotation: 0,
-                        legend: 'count',
+                        legend: 'Price in €',
                         legendOffset: -40,
                         legendPosition: 'middle',
                         truncateTickAt: 0
@@ -68,6 +69,19 @@ export const PriceComparisonLineGraph: FC<PriceComparisonLineGraphProps> = ({fro
                     pointLabelYOffset={-12}
                     enableTouchCrosshair={true}
                     useMesh={true}
+                    layers={[
+                        "grid",
+                        "markers",
+                        "axes",
+                        "areas",
+                        "crosshair",
+                        "line",
+                        "slices",
+                        "points",
+                        "mesh",
+                        "legends",
+                        DashedSolidLine
+                    ]}
                     legends={[
                         {
                             anchor: 'bottom-right',
@@ -91,10 +105,43 @@ export const PriceComparisonLineGraph: FC<PriceComparisonLineGraphProps> = ({fro
                                         itemOpacity: 1
                                     }
                                 }
-                            ]
+                            ],
+                            data: graphData.filter(item => !String(item.id).includes("future")).map(item => ({
+                                id: item.id,
+                                label: item.id,
+                                color: item.id.toString().includes('train') ? '#FFC917' : '#0063D3'
+                            }))
                         }
                     ]}
                 />}
         </>
     )
 }
+
+const DashedSolidLine = ({series, lineGenerator, xScale, yScale}) => {
+    return series.map(({id, data, color}, index) => (
+        <path
+            key={id}
+            d={lineGenerator(
+                data.map((d) => ({
+                    x: xScale(d.data.x),
+                    y: yScale(d.data.y)
+                }))
+            )}
+            fill="none"
+            stroke={color}
+            style={
+                index < 2
+                    ? {
+                        // simulate line will dash stroke when index is even
+                        strokeDasharray: "2, 2",
+                        strokeWidth: 2
+                    }
+                    : {
+                        // simulate line with solid stroke
+                        strokeWidth: 2
+                    }
+            }
+        />
+    ));
+};
