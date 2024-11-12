@@ -1,0 +1,8 @@
+version: 2
+tunnels:
+  backend:
+    proto: http
+    addr: http://127.0.0.1:5000
+  frontend:
+    proto: http
+    addr: http://localhost:5173

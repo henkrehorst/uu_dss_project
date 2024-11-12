@@ -1,9 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
 from routes.rail_routes import rail_routes_blueprint
-from routes.performance import performance_blueprint
-from routes.route_crowdForecast import crowd_forecast_blueprint
-from routes.travelers_compensations import travelers_compensations_blueprint
 from routes.price_comparison import price_comparison_blueprint
 from dotenv import load_dotenv
 
@@ -15,12 +12,7 @@ app = Flask(__name__)
 CORS(app)
 
 app.register_blueprint(rail_routes_blueprint)
-app.register_blueprint(performance_blueprint)
-app.register_blueprint(travelers_compensations_blueprint)
 app.register_blueprint(price_comparison_blueprint)
-
-app.register_blueprint(crowd_forecast_blueprint)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

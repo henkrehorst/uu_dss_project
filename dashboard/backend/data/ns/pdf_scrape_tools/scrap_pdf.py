@@ -10,7 +10,7 @@ Trein prijzen 2017 ->
     - end chapter: Traject Vrij\n
 """
 # read pdf file with pymupdf from data/treinprijzen2019.pdf
-pdf_path = './data/ns/pdf/treinprijzen2024.pdf'
+pdf_path = '../pdf/treinprijzen2024.pdf'
 pdf = pymupdf.open(pdf_path)
 
 print("hello world")
