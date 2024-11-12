@@ -1,8 +1,7 @@
+import json
 import os
 from flask import abort, Blueprint
 import pandas as pd
-import mpld3
-import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from scipy.stats import t
@@ -57,34 +56,12 @@ def price_comparison(from_station, to_station):
     train_t_value = t.ppf(0.975, df=len(years_train) - 2)  # t-value for 95% confidence interval
     train_ci = train_t_value * train_error_margin  # Confidence interval
 
-    # Creating the plot
-    plt.figure(figsize=(10, 6))
-
-    # Plot historical data
-    plt.plot(years_road.astype(int), road_cost, marker='o', color='#FFC917', label="Road cost")
-    plt.plot(trainCosts['year'], trainCosts['tariff'], marker='x', color='#003082', label="Train cost")
-
-    # Plot predictions with error margins
-    plt.plot(future_years_road, future_road_cost, 'o--', color='#FFC917', label="Road cost (Predicted)")
-    plt.fill_between(future_years_road.flatten(),
-                     future_road_cost - road_ci,
-                     future_road_cost + road_ci,
-                     color='#FFC917', alpha=0.2, label="Road cost (95% CI)")
-
-    plt.plot(future_years_train, future_train_cost, 'x--', color='#003082', label="Train cost (Predicted)")
-    plt.fill_between(future_years_train.flatten(),
-                     future_train_cost - train_ci,
-                     future_train_cost + train_ci,
-                     color='#003082', alpha=0.2, label="Train cost (95% CI)")
-
-    # Final plot settings
-    plt.xlabel("Year")
-    plt.ylabel("Route cost")
-    plt.title("Road vs Train Prices with Error Margins")
-    plt.grid(True)
-    plt.legend()
-
-    return mpld3.fig_to_html(plt.gcf())
+    return json.dumps([
+        {"id": "future road", "data": combine_year_costs(future_years_road.astype(int).flatten(), future_road_cost)},
+        {"id": "future train", "data": combine_year_costs(future_years_train.astype(int).flatten(), future_train_cost)},
+        {"id": "road prices", "data": combine_year_costs(years_road.astype(int).flatten(), road_cost)},
+        {"id": "train prices", "data": combine_year_costs(trainCosts['year'].astype(int), trainCosts['tariff'])}
+    ], cls=NpEncoder)
 
 
 def get_road_distance(from_station, to_station):
@@ -118,3 +95,18 @@ def get_train_costs(from_station, to_station):
         abort(404, description='No tariffs found for this route')
 
     return train_tariffs
+
+
+def combine_year_costs(years, costs):
+    return [{'x': year, 'y': cost} for year, cost in zip(years, costs)]
+
+
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super(NpEncoder, self).default(obj)

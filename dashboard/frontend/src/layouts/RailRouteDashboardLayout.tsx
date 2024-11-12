@@ -71,15 +71,9 @@ export const RailRouteDashboardLayout: FC<DashboardLayoutProps> = ({
                             {railLinesComponent}
                         </GridItem>
                     </Grid>
-                    <SimpleGrid columns={[1, 1, 3]} gap={2} w={'100%'}>
+                    <SimpleGrid columns={[1, 1]} gap={2} w={'100%'}>
                         <Box borderColor={"gray.700"} p={2} borderWidth="1px" borderRadius="md">
                             {gaugeSlot1}
-                        </Box>
-                        <Box borderColor={"gray.700"} p={2} borderWidth="1px" borderRadius="md">
-                            {gaugeSlot2}
-                        </Box>
-                        <Box borderColor={"gray.700"} p={2} borderWidth="1px" borderRadius="md">
-                            {gaugeSlot3}
                         </Box>
                     </SimpleGrid>
                     <SimpleGrid columns={[1, 1, 2]} w={'100%'} gap={2}>
