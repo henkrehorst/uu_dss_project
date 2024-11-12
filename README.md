@@ -13,7 +13,6 @@
 ### Datasets & Sources
 - NS API Portal: several API's to retrieve data about stations, locations, prices, etc.
 - NS Tariefeenheden Reports: CSV files, containing data that we scraped from PDF's
-- 
 - CBS API: retrieving fuel prices for the last +- 10 years
 - RDW API: data on fuel types and fuel consumption for every registered car
 - Google Maps Directions API: retrieving data for routes on the road
