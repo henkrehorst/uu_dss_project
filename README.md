@@ -7,7 +7,6 @@
 - The Dashboard is available at http://localhost:8084
 
 ### Related links 
-- Link to the Video: 
 - Link to the Codebase: https://github.com/henkrehorst/uu_dss_project
 
 ### Datasets & Sources
