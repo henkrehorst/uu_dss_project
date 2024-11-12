@@ -10,6 +10,11 @@ if "__main__" == __name__:
     # Load env variables
     load_dotenv('.env')
 
+    import_ns_tariffs_by_year(2016)
+    import_ns_tariffs_by_year(2017)
+    import_ns_tariffs_by_year(2018)
+    import_ns_tariffs_by_year(2019)
+    import_ns_tariffs_by_year(2020)
     import_ns_tariffs_by_year(2021)
     import_ns_tariffs_by_year(2022)
     import_ns_tariffs_by_year(2023)
