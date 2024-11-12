@@ -2,7 +2,6 @@
 
 import {useParams} from "react-router-dom";
 import {RailRoutesMap} from "@/components/RailRoutesMap.tsx";
-import {TravelersCompensationsLineGraph} from "@/components/TravelersCompensationsLineGraph.tsx";
 import {TBSPerformanceGauge} from "@/components/TBSPerformanceGauge.tsx";
 import {InfrastructurePerformanceGauge} from "@/components/InfrastructurePerformanceGauge.tsx";
 import {EquipmentPerformanceGauge} from "@/components/EquipmentPerformanceGauge.tsx";
@@ -10,6 +9,8 @@ import {RailRoutesLines} from "@/components/RailRoutesLines.tsx";
 import {RailRouteDashboardLayout} from "@/layouts/RailRouteDashboardLayout.tsx";
 import {useEffect, useState} from "react";
 import {RailRouteType} from "@/types/RailRouteType.ts";
+import {TravelTimeComparisonBarChart} from "@/components/charts/TravelTimeComparisonBarChart.tsx";
+import {EmissionComparisonBarChart} from "@/components/charts/EmissionComparisonBarChart.tsx";
 
 export const RailRoutePage = () => {
     let {toStation, fromStation} = useParams<{ toStation: string, fromStation: string }>()
@@ -35,8 +36,10 @@ export const RailRoutePage = () => {
                 gaugeSlot1={<TBSPerformanceGauge/>}
                 gaugeSlot2={<EquipmentPerformanceGauge/>}
                 gaugeSlot3={<InfrastructurePerformanceGauge/>}
-                lineGraphSlot1={<TravelersCompensationsLineGraph/>}
-                lineGraphSlot2={<TravelersCompensationsLineGraph/>}
+                lineGraphSlot1={<EmissionComparisonBarChart fromStation={railRoute.from_station}
+                                                            toStation={railRoute.to_station}/>}
+                lineGraphSlot2={<TravelTimeComparisonBarChart fromStation={railRoute.from_station}
+                                                              toStation={railRoute.to_station}/>}
             />}
         </>
     )

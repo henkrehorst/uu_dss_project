@@ -35,7 +35,7 @@ def get_rail_route_by_stations(from_station, to_station):
         f"select * from ns_frequent_rail_routes where from_station = '{from_station}' and to_station = '{to_station}'",
         engine)
 
-    if rail_route.count() == 0:
+    if rail_route.shape[0] == 0:
         abort(404, description="No rail route found")
 
     # fix geojson format
@@ -61,17 +61,39 @@ def get_rail_route_duration_comparison_by_vehicle(from_station, to_station):
     return [
         {
             "vehicle": "car",
-            "travel time by car": round(time_comparisons['car_time'][0], 1),
-            "travel time by carColor": '#0063D3',
+            "travel time car": round(time_comparisons['car_time'][0], 1)
         },
         {
             "vehicle": "train",
-            "travel time by train": round(time_comparisons['train_time'][0], 1),
-            "travel time by trainColor": '#FFC917'
+            "travel time train": round(time_comparisons['train_time'][0], 1)
         },
         {
             "vehicle": "differences",
-            "travel time differences": round(time_comparisons['car_time'][0] - time_comparisons['train_time'][0], 1),
-            "travel time differencesColor": '#DB0029'
+            "travel time differences": round(time_comparisons['car_time'][0] - time_comparisons['train_time'][0], 1)
         },
     ]
+
+
+@rail_routes_blueprint.route("/rail_routes/lines/<from_station>/<to_station>/emissions")
+def get_rail_route_emissions_comparison(from_station, to_station):
+    engine = create_engine(os.getenv('DATABASE_URL'))
+
+    route_distances = pd.read_sql_query(
+        f"""
+        select car.road_distance from rail_route_car_comparison car
+        where car.from_station = '{from_station}' and car.to_station = '{to_station}'""",
+        engine)
+
+    if route_distances.shape[0] == 0:
+        abort(404, description="No rail route found")
+
+    travel_emissions = pd.read_sql_query("""select * from travel_emissions order by vehicle_type""", engine)
+    travel_emissions_graph_data = []
+
+    for index, row in travel_emissions.iterrows():
+        travel_emissions_graph_data.append({
+            "vehicle": row['vehicle_type'].replace("_", " "),
+            "co2 emission " + row['vehicle_type'].replace("_", " "): round((row['co2_emission'] * route_distances['road_distance'][0]), 1)
+        })
+
+    return travel_emissions_graph_data
