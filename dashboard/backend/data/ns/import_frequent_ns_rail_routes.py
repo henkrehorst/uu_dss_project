@@ -15,9 +15,11 @@ def import_frequent_rail_routes():
 
     # iterate through the frequent rail routes and add the geojson data and travel duration
     for index, row in frequent_rail_routes.iterrows():
+        from_code = FE_Codes(row['from_station'])
+        to_code = FE_Codes(row['to_station'])
+
         # Get a list of intermediate stops between the from and to station
-        station_data, duration = rail_stops_and_trip_duration(FE_Codes(row['from_station']),
-                                                              FE_Codes(row['to_station']))
+        station_data, duration = rail_stops_and_trip_duration(from_code, to_code)
         # Convert the list of intermediate stations to a string so that it fits the getGeo API
         station_data_formatted = ",".join(station_data)
 
@@ -32,6 +34,8 @@ def import_frequent_rail_routes():
         frequent_rail_routes.at[index, 'trip_duration'] = duration
         frequent_rail_routes.at[index, 'from_coordinates'] = from_coordinates
         frequent_rail_routes.at[index, 'to_coordinates'] = to_coordinates
+        frequent_rail_routes.at[index, 'to_code'] = to_code
+        frequent_rail_routes.at[index, 'from_code'] = from_code
         frequent_rail_routes.at[index, 'tariff_units'] = get_tariff_units(row['from_station'], row['to_station'])
 
     # save frequent rail routes to database

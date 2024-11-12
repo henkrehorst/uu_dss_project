@@ -10,7 +10,7 @@ def migrate():
         metadata = MetaData()
         Table(table_name, metadata,
               Column('id', Integer, primary_key=True, autoincrement=True, nullable=False),
-              Column('rail_route', String(length=30), nullable=False),
+              Column('rdt_station_codes', String(length=100), nullable=False),
               Column('year', Integer, nullable=False),
               Column('average_duration_minutes', Numeric(10, 2), default=0, nullable=False),
               )

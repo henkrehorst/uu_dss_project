@@ -48,9 +48,14 @@ const RailRoutesGeoJson: FC<RailRoutesMapProps> = ({railRoute}) => {
     }, [railRoute])
 
     return (
-        <>
+        <>  {railRoute != undefined &&
+            <GeoJSON key={geoJsonKey} data={railRoute?.car_geo_json} style={{color: '#0063D3'}}>
+                <Popup>
+                    Car route
+                </Popup>
+            </GeoJSON>}
             {routes.map((route, index) =>
-                <GeoJSON key={index + geoJsonKey} data={route} style={(route) => ({color: route.styles.color})}>
+                <GeoJSON key={index + geoJsonKey} data={route} style={(route) => ({color: railRoute != undefined ? '#FFC917' : route.styles.color})}>
                     <Popup>
                         From: {route['stations'][0]}, To: {route['stations'][1]}
                     </Popup>

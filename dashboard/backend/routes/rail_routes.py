@@ -32,7 +32,12 @@ def get_rail_route_by_stations(from_station, to_station):
     engine = create_engine(os.getenv('DATABASE_URL'))
 
     rail_route = pd.read_sql_query(
-        f"select * from ns_frequent_rail_routes where from_station = '{from_station}' and to_station = '{to_station}'",
+        f"""select ns.*, rrcc.car_geo_json
+                from ns_frequent_rail_routes ns
+         join public.rail_route_car_comparison rrcc
+             on CAST(ns.to_station as int) = CAST(rrcc.to_station as int) and
+                CAST(ns.from_station as int) = CAST(rrcc.from_station as int)
+                where ns.from_station = '{from_station}' and ns.to_station = '{to_station}'""",
         engine)
 
     if rail_route.shape[0] == 0:
@@ -40,6 +45,7 @@ def get_rail_route_by_stations(from_station, to_station):
 
     # fix geojson format
     rail_route['geojson'] = rail_route['geojson'].apply(json.loads)
+    rail_route['car_geo_json'] = list(rail_route['car_geo_json'].apply(json.loads))
 
     return rail_route.to_dict(orient='records')[0]
 
@@ -105,20 +111,21 @@ def get_rail_route_disruptions(from_station, to_station):
     engine = create_engine(os.getenv('DATABASE_URL'))
 
     rail_route_name = pd.read_sql_query(
-        f"select name from ns_frequent_rail_routes where from_station = '{from_station}' and to_station = '{to_station}'",
+        f"select to_code, from_code from ns_frequent_rail_routes where from_station = '{from_station}' and to_station = '{to_station}'",
         engine)
 
     if rail_route_name.shape[0] == 0:
         abort(404, description="No rail route found")
 
-    average_duration = pd.read_sql_query(
-        f"""select year as x, avg(average_duration_minutes) as y from train_disruptions
-                where rail_route Like '%{rail_route_name['name'][0].replace("–","-")}%' group by year""",
+    disruptions = pd.read_sql_query(
+        f"""select year, avg(average_duration_minutes) from train_disruptions t
+                where array ['{rail_route_name["to_code"][0]}','{rail_route_name["from_code"][0]}'] @> string_to_array(t.rdt_station_codes, ', ')
+                group by year""",
         engine)
 
     return [{
-        "id": "disruptions",
+        "id": "Train Disruption",
         "color": "hsl(33, 70%, 50%)",
-        "data": average_duration.to_dict()
+        "data": [{'x': x, 'y': y} for x, y in zip(disruptions['year'], disruptions['avg'])]
     }]
 

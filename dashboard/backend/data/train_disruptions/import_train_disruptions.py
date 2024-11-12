@@ -23,10 +23,10 @@ def import_train_disruptions():
     data['year'] = pd.to_datetime(data['start_time']).dt.year
 
     # Group by 'Traject' (the column 'rdt_lines') and 'year', then calculate the average delay per line
-    average_delay_per_line = data.groupby(['rdt_lines', 'year'])['duration_minutes'].mean().reset_index()
+    average_delay_per_line = data.groupby(['rdt_station_codes', 'year'])['duration_minutes'].mean().reset_index()
 
     # Rename columns for clarity
-    average_delay_per_line.columns = ['rail_route', 'year', 'average_duration_minutes']
+    average_delay_per_line.columns = ['rdt_station_codes', 'year', 'average_duration_minutes']
 
     # save train disruptions to database
     engine = create_engine(os.getenv('DATABASE_URL'))
