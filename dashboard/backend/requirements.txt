@@ -11,3 +11,6 @@ flask-cors
 python-dotenv
 pymupdf
 googlemaps
+sodapy
+matplotlib
+mpld3

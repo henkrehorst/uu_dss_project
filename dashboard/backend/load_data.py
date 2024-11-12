@@ -4,6 +4,7 @@ from data.ns.import_frequent_ns_rail_routes import import_frequent_rail_routes
 from data.travel_emissions.import_travel_emissions import import_emissions_for_vehicles
 from data.train_disruptions.import_train_disruptions import import_train_disruptions
 from data.googlemaps.import_rail_route_car_comparison_data import import_rail_routes_car_times_by_google_maps
+from data.car_costs.import_car_costs import import_car_costs
 
 if "__main__" == __name__:
     print("Start data loading...")
@@ -23,5 +24,6 @@ if "__main__" == __name__:
     import_emissions_for_vehicles()
     import_train_disruptions()
     import_rail_routes_car_times_by_google_maps()
+    import_car_costs()
 
     print("Data loading finished!")
