@@ -11,8 +11,12 @@
 - Link to the Codebase: https://github.com/henkrehorst/uu_dss_project
 
 ### Datasets
-- Dataset: all data we are using so far is retrieved directly from various API's
-- Other Links: NA
+- NS API Portal: several API's to retrieve data about stations, locations, prices, etc.
+- NS Tariefeenheden Reports: CSV files, containing data that we scraped from PDF's
+- CBS API: retrieving fuel prices for the last +- 10 years
+- RDW API: data on fuel types and fuel consumption for every registered car
+- Google Maps Directions API: retrieving data for routes on the road
+- CE Delft API: retrieves data about car and train emissions
 
 ### Data Collection and Preparation
 * route_crowdForecast.py
