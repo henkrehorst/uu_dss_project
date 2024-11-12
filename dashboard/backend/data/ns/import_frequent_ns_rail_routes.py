@@ -1,7 +1,8 @@
 import pandas as pd
 import os
 from sqlalchemy import create_engine
-from data.ns.ns_api import rail_stops_and_trip_duration, get_geo_json, get_station_information, get_tariff_units
+from data.ns.ns_api import rail_stops_and_trip_duration, get_geo_json, get_station_information, get_tariff_units, \
+    FE_Codes
 import json
 
 
@@ -15,7 +16,8 @@ def import_frequent_rail_routes():
     # iterate through the frequent rail routes and add the geojson data and travel duration
     for index, row in frequent_rail_routes.iterrows():
         # Get a list of intermediate stops between the from and to station
-        station_data, duration = rail_stops_and_trip_duration(row['from_station'], row['to_station'])
+        station_data, duration = rail_stops_and_trip_duration(FE_Codes(row['from_station']),
+                                                              FE_Codes(row['to_station']))
         # Convert the list of intermediate stations to a string so that it fits the getGeo API
         station_data_formatted = ",".join(station_data)
 

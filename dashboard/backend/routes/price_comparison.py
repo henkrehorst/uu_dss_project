@@ -13,7 +13,7 @@ price_comparison_blueprint = Blueprint('price_comparison', __name__)
 @price_comparison_blueprint.route("/price_comparison/<from_station>/<to_station>")
 def price_comparison(from_station, to_station):
     engine = create_engine(os.getenv('DATABASE_URL'))
-    car_costs = pd.read_sql_query('SELECT * FROM car_costs', engine)
+    car_costs = pd.read_sql_query('SELECT * FROM car_costs where cast("Perioden" as int) > 2015', engine)
     # convert to key value pair
     road_cost = (car_costs['yearAvg'] / 100) * float(get_road_distance(from_station, to_station))
     car_costs = car_costs.set_index('Perioden')['yearAvg']

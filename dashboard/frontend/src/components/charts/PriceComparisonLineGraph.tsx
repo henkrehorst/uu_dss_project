@@ -30,7 +30,7 @@ export const PriceComparisonLineGraph: FC<PriceComparisonLineGraphProps> = ({fro
                     margin={{top: 50, right: 110, bottom: 50, left: 60}}
                     xScale={{
                         type: 'linear',
-                        min: 2006,
+                        min: 2016,
                         max: 'auto'
                     }}
                     yScale={{
