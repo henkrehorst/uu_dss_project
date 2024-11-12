@@ -26,7 +26,7 @@ export const PriceComparisonLineGraph: FC<PriceComparisonLineGraphProps> = ({fro
                      color={'blue.500'}>Price comparison between car and train</Heading>
             {graphData === null ? <Spinner/> :
                 <ResponsiveLine
-                    colors={['#FFC917', '#0063D3', '#FFC917', '#0063D3']}
+                    colors={['#0063D3', '#FFC917', '#0063D3', '#FFC917']}
                     data={graphData}
                     margin={{top: 50, right: 110, bottom: 50, left: 60}}
                     xScale={{
@@ -52,6 +52,15 @@ export const PriceComparisonLineGraph: FC<PriceComparisonLineGraphProps> = ({fro
                         legendPosition: 'middle',
                         truncateTickAt: 0
                     }}
+                    tooltip={({point}) => (<div style={{
+                        padding: 12,
+                        color: "#ffffff",
+                        background: '#222222'
+                    }}>
+                        <strong>
+                            {point.id.split('.')[0]} – €{Number(point.data.y).toFixed(2)} in {point.data.x}
+                        </strong>
+                    </div>)}
                     axisLeft={{
                         tickSize: 5,
                         tickPadding: 5,
@@ -106,10 +115,10 @@ export const PriceComparisonLineGraph: FC<PriceComparisonLineGraphProps> = ({fro
                                     }
                                 }
                             ],
-                            data: graphData.filter(item => !String(item.id).includes("future")).map(item => ({
+                            data: graphData.filter(item => !String(item.id).includes("Predicted")).map(item => ({
                                 id: item.id,
                                 label: item.id,
-                                color: item.id.toString().includes('train') ? '#FFC917' : '#0063D3'
+                                color: item.id.toString().includes('Train') ? '#FFC917' : '#0063D3'
                             }))
                         }
                     ]}

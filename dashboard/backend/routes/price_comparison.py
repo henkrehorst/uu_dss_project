@@ -57,10 +57,10 @@ def price_comparison(from_station, to_station):
     train_ci = train_t_value * train_error_margin  # Confidence interval
 
     return json.dumps([
-        {"id": "future road", "data": combine_year_costs(future_years_road.astype(int).flatten(), future_road_cost)},
-        {"id": "future train", "data": combine_year_costs(future_years_train.astype(int).flatten(), future_train_cost)},
-        {"id": "road prices", "data": combine_year_costs(years_road.astype(int).flatten(), road_cost)},
-        {"id": "train prices", "data": combine_year_costs(trainCosts['year'].astype(int), trainCosts['tariff'])}
+        {"id": "Road cost (Predicted)", "data": combine_year_costs(future_years_road.astype(int).flatten(), future_road_cost)},
+        {"id": "Train cost (Predicted)", "data": combine_year_costs(future_years_train.astype(int).flatten(), future_train_cost)},
+        {"id": "Road cost", "data": combine_year_costs(years_road.astype(int).flatten(), road_cost)},
+        {"id": "Train cost", "data": combine_year_costs(trainCosts['year'].astype(int), trainCosts['tariff'])}
     ], cls=NpEncoder)
 
 

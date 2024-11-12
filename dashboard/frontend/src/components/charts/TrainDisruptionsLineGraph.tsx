@@ -57,7 +57,6 @@ export const TrainDisruptionsLineGraph: FC<TrainDisruptionsLineGraphProps> = ({f
                         background: '#222222'
                     }}>
                         <strong>
-                            {console.log(point)}
                             {Number(point.data.y).toFixed(1)} minutes in {point.data.x}
                         </strong>
                     </div>)}
