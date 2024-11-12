@@ -4,7 +4,7 @@ Running the app:
 - Open a terminal or command prompt
 - CD to root the directory of this codebase
 - run 'docker compose up'. In some versions, you might need docker-compose up
-- The Dashboard is available at http://localhost:8084/traject/test
+- The Dashboard is available at http://localhost:8084
     
 Link to the Video: https://drive.google.com/file/d/1GKW8umlqtfMP0jyj00yFB7SBTx7oIUyE/view
 Link to the Codebase: https://github.com/henkrehorst/uu_dss_project
