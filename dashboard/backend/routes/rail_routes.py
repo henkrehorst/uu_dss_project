@@ -93,7 +93,32 @@ def get_rail_route_emissions_comparison(from_station, to_station):
     for index, row in travel_emissions.iterrows():
         travel_emissions_graph_data.append({
             "vehicle": row['vehicle_type'].replace("_", " "),
-            "co2 emission " + row['vehicle_type'].replace("_", " "): round((row['co2_emission'] * route_distances['road_distance'][0]), 1)
+            "co2 emission " + row['vehicle_type'].replace("_", " "): round(
+                (row['co2_emission'] * route_distances['road_distance'][0]), 1)
         })
 
     return travel_emissions_graph_data
+
+
+@rail_routes_blueprint.route("/rail_routes/lines/<from_station>/<to_station>/disruptions")
+def get_rail_route_disruptions(from_station, to_station):
+    engine = create_engine(os.getenv('DATABASE_URL'))
+
+    rail_route_name = pd.read_sql_query(
+        f"select name from ns_frequent_rail_routes where from_station = '{from_station}' and to_station = '{to_station}'",
+        engine)
+
+    if rail_route_name.shape[0] == 0:
+        abort(404, description="No rail route found")
+
+    average_duration = pd.read_sql_query(
+        f"""select year as x, avg(average_duration_minutes) as y from train_disruptions
+                where rail_route Like '%{rail_route_name['name'][0].replace("–","-")}%' group by year""",
+        engine)
+
+    return [{
+        "id": "disruptions",
+        "color": "hsl(33, 70%, 50%)",
+        "data": average_duration.to_dict()
+    }]
+
